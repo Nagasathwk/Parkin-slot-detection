@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parking Slot Status</title>
+    <style>
+        .slot {
+            width: 200px;
+            height: 100px;
+            border: 2px solid black;
+            text-align: center;
+            line-height: 100px;
+            font-size: 24px;
+            margin: 50px auto;
+        }
+        .empty {
+            background-color: lightgreen;
+        }
+        .full {
+            background-color: lightcoral;
+        }
+    </style>
+    <script>
+        function fetchStatus() {
+            fetch('/status')
+                .then(response => response.json())
+                .then(data => {
+                    const slot = document.getElementById('slot');
+                    if (data.parking_status === 'FULL') {
+                        slot.className = 'slot full';
+                        slot.innerText = 'Parking Slot Full';
+                    } else {
+                        slot.className = 'slot empty';
+                        slot.innerText = 'Parking Slot Empty';
+                    }
+                });
+        }
+
+        setInterval(fetchStatus, 1000);  // Adjust interval as needed
+        window.onload = fetchStatus;
+    </script>
+</head>
+<body>
+    <h1>Parking Slot Status</h1>
+    <div id="slot" class="slot empty">
+        Parking Slot Empty
+    </div>
+</body>
+</html>
